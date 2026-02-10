@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const notesSchema = mongoose.Schema({
+const notesSchema = new mongoose.Schema({
     title :{
         type : String,
         required : true
@@ -15,7 +15,7 @@ const notesSchema = mongoose.Schema({
     },
     date : {
         type : Date,
-        default : Date.now()
+        default : Date.now
     }
 })
 

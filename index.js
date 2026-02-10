@@ -1,22 +1,26 @@
-const e = require("express")
-const express = require("express")
-const mongoose = require("mongoose")
-const env = require('dotenv')
-const cors = require('cors')
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
-const app = express()
+const notesRoutes = require("./Routes/notesRoutes");
 
+const app = express();
 
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
+console.log("Notes routes loaded:", typeof notesRoutes);
 
-app.use(cors())
+app.use("/api/notes", notesRoutes);
 
-mongoose.connect(process.env.DBURL).then(() =>{
-    console.log("Connection estalished")
-
-    app.listen(process.env.PORT, () =>{
-        console.log("Server running on port : ", process.env.PORT)
-    })
-}).catch((err) =>{
-    console.log("Error while establishin Connnection !!!")
-})
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connection established");
+    app.listen(process.env.PORT, () => {
+      console.log("Server running on port:", process.env.PORT);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err.message);
+  });
